@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         resultado.forEach(par => {
             let li = document.createElement('li');
-            li.textContent = `${par.participante} → ${par.amigoSecreto}`;
+            li.textContent = `${par.participante} tirou ${par.amigoSecreto}`;
             listaResultado.appendChild(li);
         });
     }
