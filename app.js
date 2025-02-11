@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function exibirListaAmigos() {
         let lista = document.getElementById('listaAmigos');
-        lista.innerHTML = ''; // Limpa a lista antes de adicionar os novos elementos
+        lista.innerHTML = '';
         listaDeAmigos.forEach(amigo => {
             let li = document.createElement('li');
             li.textContent = amigo;
@@ -32,15 +32,15 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('É necessário pelo menos dois participantes para o sorteio.');
             return;
         }
-
+    
         let participantesEmbaralhados = [...listaDeAmigos];
-
+    
         // Embaralha a lista (algoritmo Fisher-Yates)
         for (let i = participantesEmbaralhados.length - 1; i > 0; i--) {
             let j = Math.floor(Math.random() * (i + 1));
             [participantesEmbaralhados[i], participantesEmbaralhados[j]] = [participantesEmbaralhados[j], participantesEmbaralhados[i]];
         }
-
+    
         amigosSecretos = [];
         for (let i = 0; i < listaDeAmigos.length; i++) {
             let amigoSecreto = participantesEmbaralhados[(i + 1) % participantesEmbaralhados.length];
@@ -49,14 +49,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 amigoSecreto: amigoSecreto
             });
         }
-
+    
         exibirResultado();
     }
-
+    
     function exibirResultado() {
         let resultadoHTML = '';
         amigosSecretos.forEach(par => {
-            resultadoHTML += `<p>${par.participante} tirou ${par.amigoSecreto}</p>`;
+            resultadoHTML += `<p>${par.participante} → ${par.amigoSecreto}</p>`;
         });
         document.getElementById('resultado').innerHTML = resultadoHTML;
     }
