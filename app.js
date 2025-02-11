@@ -26,48 +26,45 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('amigo').value = ''; // Limpa o campo
     }
 
-    function embaralhar(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            let j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
-
     function sortearAmigo() {
         if (listaDeAmigos.length < 2) {
             alert('É necessário pelo menos dois participantes para o sorteio.');
             return;
         }
 
-        let participantesEmbaralhados;
-        let valido = false;
+        let participantes = [...listaDeAmigos];
+        let sorteados = [...listaDeAmigos]; // Lista dos sorteados
+        let resultado = [];
 
-        // Tenta embaralhar até garantir que ninguém tirou a si mesmo
-        while (!valido) {
-            participantesEmbaralhados = [...listaDeAmigos];
-            embaralhar(participantesEmbaralhados);
+        for (let i = 0; i < participantes.length; i++) {
+            let possiveisSorteios = sorteados.filter(nome => nome !== participantes[i]);
 
-            valido = true;
-            for (let i = 0; i < listaDeAmigos.length; i++) {
-                if (listaDeAmigos[i] === participantesEmbaralhados[i]) {
-                    valido = false;
-                    break;
-                }
+            if (possiveisSorteios.length === 0) {
+                // Se chegou a um ponto sem opções, reinicia o sorteio
+                return sortearAmigo();
             }
+
+            let indiceSorteado = Math.floor(Math.random() * possiveisSorteios.length);
+            let amigoSorteado = possiveisSorteios[indiceSorteado];
+
+            resultado.push({ participante: participantes[i], amigoSecreto: amigoSorteado });
+
+            // Remove o sorteado da lista para não ser escolhido novamente
+            sorteados.splice(sorteados.indexOf(amigoSorteado), 1);
         }
 
-        exibirResultado(participantesEmbaralhados);
+        exibirResultado(resultado);
     }
 
-    function exibirResultado(participantesEmbaralhados) {
-        let resultado = document.getElementById('resultado');
-        resultado.innerHTML = ''; // Limpa a lista antes de atualizar
+    function exibirResultado(resultado) {
+        let listaResultado = document.getElementById('resultado');
+        listaResultado.innerHTML = ''; // Limpa a lista antes de atualizar
 
-        for (let i = 0; i < listaDeAmigos.length; i++) {
+        resultado.forEach(par => {
             let li = document.createElement('li');
-            li.textContent = `${listaDeAmigos[i]} → ${participantesEmbaralhados[i]}`;
-            resultado.appendChild(li);
-        }
+            li.textContent = `${par.participante} → ${par.amigoSecreto}`;
+            listaResultado.appendChild(li);
+        });
     }
 
     // Adiciona eventos aos botões
