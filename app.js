@@ -33,20 +33,27 @@ document.addEventListener('DOMContentLoaded', function() { // Espera o documento
             return; // Sai da função se não houver participantes suficientes.
         }
 
-        let participantesEmbaralhados = [...listaDeAmigos]; // Cria uma cópia da lista de amigos para embaralhar.
+        let embaralhado = false;
+        let participantesEmbaralhados;
+        
+        while (!embaralhado) {
+            participantesEmbaralhados = [...listaDeAmigos]; // Cria uma cópia da lista de amigos para embaralhar.
+            
+            // Embaralha a lista (algoritmo Fisher-Yates)
+            for (let i = participantesEmbaralhados.length - 1; i > 0; i--) { // Loop para embaralhar a lista.
+                let j = Math.floor(Math.random() * (i + 1)); // Gera um índice aleatório.
+                [participantesEmbaralhados[i], participantesEmbaralhados[j]] = [participantesEmbaralhados[j], participantesEmbaralhados[i]]; // Troca os elementos de posição.
+            }
 
-        // Embaralha a lista (algoritmo Fisher-Yates)
-        for (let i = participantesEmbaralhados.length - 1; i > 0; i--) { // Loop para embaralhar a lista.
-            let j = Math.floor(Math.random() * (i + 1)); // Gera um índice aleatório.
-            [participantesEmbaralhados[i], participantesEmbaralhados[j]] = [participantesEmbaralhados[j], participantesEmbaralhados[i]]; // Troca os elementos de posição.
+            // Verifica se ninguém tirou a si mesmo
+            embaralhado = participantesEmbaralhados.every((amigo, index) => amigo !== listaDeAmigos[index]);
         }
 
         amigosSecretos = []; // Reinicia a lista de amigos secretos.
         for (let i = 0; i < listaDeAmigos.length; i++) { // Loop para criar os pares de amigos secretos.
-            let amigoSecreto = participantesEmbaralhados[(i + 1) % participantesEmbaralhados.length]; // Seleciona o próximo amigo na lista embaralhada.
             amigosSecretos.push({ // Cria um objeto com o participante e seu amigo secreto.
                 participante: listaDeAmigos[i],
-                amigoSecreto: amigoSecreto
+                amigoSecreto: participantesEmbaralhados[i]
             });
         }
 
