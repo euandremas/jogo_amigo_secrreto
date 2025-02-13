@@ -18,7 +18,7 @@ O jogo embaralha os nomes e faz o sorteio de forma justa, sem ninguém tirando a
 
 Veja os pares formados e descubra quem será seu amigo secreto. 🎅
 
-<video controls src="Amigo Secreto.mp4" title="Title"></video>
+![alt text](<Amigo Secreto.gif>)
 
 🔥 Recursos Especiais
 
